@@ -1,6 +1,7 @@
 from typing import Optional, Tuple, Any, Type
 
 import pygame
+import script.context as ctx
 
 scene_class = Type["Scene"]
 callback = Tuple[scene_class, Tuple[Any, ...]]
