@@ -1,4 +1,6 @@
 from scene import *
+from text import TextRender
+import context as ctx
 
 
 class Title(Scene):
@@ -9,6 +11,8 @@ class Title(Scene):
         self.options = ["Play", "Settings", "Quit"]
         self.callbacks = [(Select, ()), (Settings, ()), (End, ())]
         self.selection = 0
+        self.begin = False
+        self.render = TextRender(screen, size=52)
 
     def get_event(self) -> Optional[callback]:
         for event in pygame.event.get():
@@ -18,6 +22,9 @@ class Title(Scene):
                 continue
             if event.key == pygame.K_ESCAPE:
                 return End, ()
+            if not self.begin:
+                self.begin = True
+                continue
             if event.key == pygame.K_UP:
                 self.selection = max(0, self.selection - 1)
             if event.key == pygame.K_DOWN:
@@ -29,4 +36,12 @@ class Title(Scene):
         result = self.get_event()
         if result is not None:
             return result
+        if not self.begin:
+            center = (ctx.width // 2, ctx.height // 2)
+            self.render("아무 키나 눌러서 시작", center)
+            return
+        for i, option in enumerate(self.options):
+            center = (ctx.width // 2, ctx.height // 2 + i * 100)
+            color = (255, 255, 127) if i == self.selection else (255, 255, 255)
+            self.render(option, center, color=color)
         return

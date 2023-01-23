@@ -11,11 +11,14 @@ class Scene:
         self.screen = screen
 
     def get_event(self) -> Optional[callback]:
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return End, ()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return End, ()
 
     def run(self) -> Optional[callback]:
-        self.get_event()
-        return
+        return self.get_event()
 
 
 class End(Scene):
