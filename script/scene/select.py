@@ -1,4 +1,4 @@
-from scene import *
+from script.scene import *
 
 
 class Select(Scene):
