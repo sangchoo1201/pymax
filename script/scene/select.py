@@ -1,12 +1,10 @@
+import json
 import os
-
-import pygame
+from dataclasses import dataclass
+from typing import List
 
 from script.scene import *
 from script.text import TextRender
-from dataclasses import dataclass
-from typing import List
-import json
 
 
 @dataclass

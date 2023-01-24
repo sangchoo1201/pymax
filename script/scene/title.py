@@ -1,16 +1,15 @@
 from script.scene import *
 from script.text import TextRender
-import script.context as ctx
 
 
 class Title(Scene):
     def __init__(self, screen: pygame.Surface, begin: Optional[bool] = False):
-        from script.scene.setting import Settings
+        from script.scene.setting import Setting
         from script.scene.select import Select
 
         super().__init__(screen)
         self.options = ["Play", "Settings", "Quit"]
-        self.callbacks = [(Select, ()), (Settings, ()), (End, ())]
+        self.callbacks = [(Select, ()), (Setting, ()), (End, ())]
         self.selection = 0
         self.begin = begin
         self.render = TextRender(screen, size=52)
