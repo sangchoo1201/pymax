@@ -1,46 +1,23 @@
 import json
 import os
-from dataclasses import dataclass
 from typing import List
 
+import pygame
+
 from script.scene import *
-from script.text import TextRender
-
-
-@dataclass
-class Song:
-    title: str
-    artist: str
-    file: str
-    preview: str
-    bpm: float
-    length: float
-    vocal: Optional[str] = ""
-
-    def make_image(self) -> pygame.Surface:
-        image = pygame.Surface((402, 122))
-        image.fill((0, 0, 0))
-        rect = image.get_rect()
-        render = TextRender(image)
-
-        pygame.draw.rect(image, (255, 255, 255), rect, width=2)
-        render(self.title, (20, 20), anchor="topleft")
-        render(self.artist, (20, 102), anchor="bottomleft", size=18)
-
-        return image
+from script.song import Song
 
 
 def get_songs() -> List[Song]:
     li = []
     for folder in (f for f in os.listdir("song") if not os.path.isfile(os.path.join("song", f))):
         folder = os.path.join("song", folder)
-        if "data.json" not in os.listdir(folder):
+        if not os.path.exists(os.path.join(folder, "data.json")):
             continue
         with open(os.path.join(folder, "data.json"), "r") as f:
             data = json.load(f)
+        data["folder"] = folder
         song = Song(**data)
-        song.file = os.path.join(folder, song.file)
-        song.preview = os.path.join(folder, song.preview)
         li.append(song)
     return li
 
@@ -53,6 +30,7 @@ class Select(Scene):
         self.selection = 0
 
     def get_event(self) -> Optional[callback]:
+        from script.scene.play import Play
         key_data = {
             pygame.K_UP: -1, pygame.K_DOWN: 1,
             pygame.K_PAGEUP: -5, pygame.K_PAGEDOWN: 5
@@ -68,6 +46,8 @@ class Select(Scene):
             if event.key in key_data:
                 self.selection += key_data[event.key]
                 self.selection %= len(self.song_list)
+            if event.key == pygame.K_RETURN:
+                return Play, (self.song_list[self.selection],)
 
     def run(self) -> Optional[callback]:
         result = self.get_event()
