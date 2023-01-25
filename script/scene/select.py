@@ -2,8 +2,7 @@ import json
 import os
 from typing import List
 
-import pygame
-
+import script.context as ctx
 from script.scene import *
 from script.song import Song
 
@@ -55,8 +54,8 @@ class Select(Scene):
             return result
         visible_list = [self.song_list[(self.selection + i) % len(self.song_list)] for i in range(-2, 3)]
         for i, song in enumerate(visible_list):
-            x = ctx.width + abs(i - 2) * 20 + 2
-            y = ctx.height // 2 + (i - 2) * 120
+            x = ctx.width + abs(i - 2) * 50 + 2
+            y = ctx.height // 2 + (i - 2) * 216
             image = song.make_image()
             rect = image.get_rect(midright=(x, y))
             self.screen.blit(image, rect)

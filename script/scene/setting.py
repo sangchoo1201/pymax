@@ -1,6 +1,8 @@
+from enum import Enum
+
+import script.context as ctx
 from script.scene import *
 from script.text import TextRender
-from enum import Enum
 
 
 class Option(Enum):

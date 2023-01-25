@@ -1,3 +1,4 @@
+import script.context as ctx
 from script.scene import *
 from script.text import TextRender
 

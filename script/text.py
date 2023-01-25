@@ -1,5 +1,6 @@
-import pygame
 from typing import Optional, Union, Tuple
+
+import pygame
 
 position_type = Union[pygame.math.Vector2, Tuple[int, int]]
 color_type = Union[pygame.color.Color, Tuple[int, int, int], Tuple[int, int, int, int]]
@@ -14,7 +15,7 @@ class TextRender:
         self.color = color
         self.font = font
 
-    def __call__(self, text: str, pos: position_type,
+    def __call__(self, text: str, pos: position_type, alpha: Optional[int] = None,
                  size: Optional[int] = None, color: Optional[color_type] = None,
                  font: Optional[str] = None, anchor: Optional[str] = "center"):
         if size is None:
@@ -28,6 +29,8 @@ class TextRender:
         color = pygame.color.Color(color)
 
         text_font = pygame.font.Font(f"resource/font/{font}", size)
-        text_img = text_font.render(text, True, color)
-        text_rect = text_img.get_rect(**{anchor: pos})
-        self.screen.blit(text_img, text_rect)
+        text_image = text_font.render(text, True, color).convert_alpha()
+        if alpha is not None:
+            text_image.fill((255, 255, 255, alpha), None, pygame.BLEND_RGBA_MULT)
+        text_rect = text_image.get_rect(**{anchor: pos})
+        self.screen.blit(text_image, text_rect)

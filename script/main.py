@@ -1,10 +1,11 @@
 import pygame
+
+import script.context as ctx
 from script.scene import Scene, End
 from script.scene.title import Title
-import script.context as ctx
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((ctx.width, ctx.height), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 scene: Scene = Title(screen)
